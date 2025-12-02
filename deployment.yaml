@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak-development
-  namespace: dev
+  name: keycloak-production
+  namespace: prod
 spec:
   selector:
     matchLabels:
-      app: keycloak-development
+      app: keycloak-production
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -17,10 +17,10 @@ spec:
   template:
     metadata:
       labels:
-        app: keycloak-development
+        app: keycloak-production
     spec:
       containers:
-      - name: keycloak-development
+      - name: keycloak-production
         args: ["start --db postgres --db-url-host postgres --db-username appuser --db-password strongpasswordapp "]
         image: quay.io/keycloak/keycloak:22.0
         imagePullPolicy: Always
@@ -46,7 +46,7 @@ spec:
           # - name: DB_DATABASE
           #   value: appdb # Remplacez par le nom de votre base de données PostgreSQL
           - name: KC_HOSTNAME
-            value: keycloak.development
+            value: keycloak.production
           # - name: DB_USER
           #   valueFrom:
           #     secretKeyRef:

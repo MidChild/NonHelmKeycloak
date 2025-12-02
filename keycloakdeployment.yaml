@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak-development
-  namespace: dev
+  name: keycloak-production
+  namespace: prod
 spec:
   selector:
     matchLabels:
-      app: keycloak-development
+      app: keycloak-production
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -17,12 +17,12 @@ spec:
   template:
     metadata:
       labels:
-        app: keycloak-development
+        app: keycloak-production
     spec:
       containers:
-        - name: keycloak-development
+        - name: keycloak-production
           image: quay.io/keycloak/keycloak:26.4
-          args: ["start-dev"]
+          args: ["start-prod"]
           imagePullPolicy: Always
           env:
             - name: KEYCLOAK_ADMIN
