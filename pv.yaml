@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  namespace: prod
+  namespace: user-service
   name: postgres-volumes
   labels:
     type: longhorn

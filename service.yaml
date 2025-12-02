@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: keycloak-production
-  namespace: prod
+  namespace: user-service
   labels:
     app: keycloak-production
 spec:

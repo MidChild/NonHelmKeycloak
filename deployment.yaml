@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak-production
-  namespace: prod
+  namespace: user-service
 spec:
   selector:
     matchLabels:

@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: keycloak-ingress
-  namespace: prod
+  namespace: user-service
   annotations:
     traefik.ingress.kubernetes.io/redirect-entry-point: "false"
 spec:
