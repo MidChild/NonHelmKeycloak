@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-development
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: keycloak-development
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: keycloak-development
+    spec:
+      containers:
+      - name: keycloak-development
+        args: ["start --db postgres --db-url-host postgres --db-username appuser --db-password strongpasswordapp "]
+        image: quay.io/keycloak/keycloak:22.0
+        imagePullPolicy: Always
+        env:
+          - name: KEYCLOAK_ADMIN
+            value: "admin"
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            value: "admin"
+          - name: KC_HOSTNAME_STRICT
+            value: "false"
+          - name: KC_PROXY_ADDRESS_FORWARDING
+            value: "true"
+          - name: KC_PROXY
+            value: edge
+          - name: KC_HTTP_ENABLED
+            value: "true"
+          # - name: DB_VENDOR
+          #   value: POSTGRES
+          # - name: DB_ADDR
+          #   value: postgres # Remplacez par le service ou l'adresse IP de votre instance PostgreSQL
+          # - name: DB_PORT
+          #   value: "5432" # Port par défaut pour PostgreSQL
+          # - name: DB_DATABASE
+          #   value: appdb # Remplacez par le nom de votre base de données PostgreSQL
+          - name: KC_HOSTNAME
+            value: keycloak.development
+          # - name: DB_USER
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: postgres-secret
+          #       key: POSTGRES_USER
+          # - name: DB_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: postgres-secret
+          #       key: POSTGRES_PASSWORD
+        ports:
+          - name: http
+            containerPort: 8080
+          - name: https
+            containerPort: 8443

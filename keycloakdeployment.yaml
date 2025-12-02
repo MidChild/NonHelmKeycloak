@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-development
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: keycloak-development
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: keycloak-development
+    spec:
+      containers:
+        - name: keycloak-development
+          image: quay.io/keycloak/keycloak:26.4
+          args: ["start-dev"]
+          imagePullPolicy: Always
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: "admin"
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: "admin"
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_URL
+              value: "jdbc:postgresql://postgres:5432/appdb"
+            - name: KC_DB_USERNAME
+              value: "appuser"
+            - name: KC_DB_PASSWORD
+              value: "strongpasswordapp"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+            - name: KC_HOSTNAME_STRICT_HTTPS
+              value: "false"
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: https
+              containerPort: 8443

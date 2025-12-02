@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  namespace: dev
+  annotations:
+    traefik.ingress.kubernetes.io/redirect-entry-point: "false"
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: keycloak.development
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak-development
+            port:
+              number: 53582
